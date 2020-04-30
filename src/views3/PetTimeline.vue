@@ -13,7 +13,7 @@
     <div class="pet-timeline-view__timeline pet-timeline-view-timeline">
       <datepicker
         class="pet-timeline-view-timeline__date"
-        :value="dateLookingAt"
+        v-model="dateLookingAt"
         format="MMMM dd yyyy"
       />
       <!-- <h2 class="pet-timeline-view-timeline__date">{{ dateLookingAt | date('MMMM Do YYYY') }}</h2> -->
@@ -51,7 +51,11 @@ export default {
   mounted () {},
   updated () {},
   destroyed () {},
-  watch: {},
+  watch: {
+    dateLookingAt (date) {
+      this.timelineService.send('CHANGE_DATE', { date })
+    }
+  },
   computed: {
     name () {
       return this.state && this.state.context && this.state.context.pet && this.state.context.pet.name

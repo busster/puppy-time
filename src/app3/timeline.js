@@ -49,6 +49,10 @@ const createAndAddMoment = ({ timeline }, { events, activity }) => {
   if (activity) addActivity(timeline, new Activity({ type: activity }))
 }
 
+const assignDate = assign({
+  date: (context, event) => event.date
+})
+
 export const createTimelineMachine = ({
   timeline
 }) => Machine({
@@ -67,7 +71,10 @@ export const createTimelineMachine = ({
     },
     showTimeline: {
       on: {
-        ADD_MOMENT: 'addMoment'
+        ADD_MOMENT: 'addMoment',
+        CHANGE_DATE: {
+          actions: ['assignDate', 'fetchTimeline']
+        }
       }
     },
     addMoment: {
@@ -90,7 +97,8 @@ export const createTimelineMachine = ({
   actions: {
     fetchTimeline,
     updateTimeline,
-    createAndAddMoment
+    createAndAddMoment,
+    assignDate
   },
   services: {}
 })
