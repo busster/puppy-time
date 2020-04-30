@@ -85,12 +85,13 @@ $menu-size: 100px;
     grid-template-rows: auto;
     grid-template-areas: "void title menu";
     background: var(--color-blue);
-    border-bottom: 1px solid var(--color-blue);
+    border-bottom: 1px solid var(--color-yellow);
   }
   &__body {
     grid-area: main;
     background: var(--color-sky-blue);
     padding: 1rem;
+    overflow-y: scroll;
   }
   &__footer {
     grid-area: footer;
