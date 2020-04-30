@@ -7,8 +7,9 @@ export const EventTypes = {
 
 export const ActivityTypes = {
   Nap: 'NAP',
-  Play: 'Play',
-  Train: 'TRAIN',
-  Walk: 'WALK',
   Crate: 'CRATE',
+  Train: 'TRAIN',
+  Play: 'Play',
+  Walk: 'WALK',
+  Run: 'RUN',
 }

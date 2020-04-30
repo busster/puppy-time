@@ -3,10 +3,10 @@
     <template
       v-for="moment in timeline"
     >
-      <div :key="'time' + moment.date">
+      <div :key="'time' + moment.date + moment.type">
         {{ moment.type }}
       </div>
-      <div :key="'type' + moment.date">
+      <div :key="'type' + moment.date + moment.type">
         {{ moment.date | date('h:mm:ss a') }}
       </div>
     </template>

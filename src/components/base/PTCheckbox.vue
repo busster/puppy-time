@@ -1,7 +1,7 @@
 <template>
-  <div :class="['sb-checkbox', variationClass]">
+  <div :class="['pt-checkbox', variationClass, checkedClass]">
     <label 
-      :class="['form-check-label', {'sb-disabled': disabled}]"     
+      :class="['form-check-label', {'pt-disabled': disabled}]"     
     >
       <div :class="['checkmarkWrapper']">       
         <input
@@ -84,6 +84,13 @@ export default {
     },
     variationClass () {
       return this.disabled ? '' : this.variation
+    },
+    checkedClass () {
+      return this.isChecked ? `pt-checkbox--checked` : ''
+    },
+    isChecked () {
+      if (Array.isArray(this.checked)) return this.checked.includes(this.value)
+      return isEqual(this.checked, this.value)
     }
   },
   methods: {
@@ -115,31 +122,53 @@ export default {
 
 </script>
 <style lang='scss' scoped>
+.pt-checkbox {
+  width: 6rem; 
+  height: 6rem;
+  border-radius: var(--border-rounded--small);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color var(--duration-normal) ease-in-out;
+  &:hover {
+    background-color: var(--color-light-blue);
+  }
+  label {
+    cursor: pointer;
+  }
+  &--checked {
+    background-color: var(--color-light-blue-darker);
+    &:hover {
+      background-color: var(--color-light-blue-darkest);
+    }
+  }
+}
 
-// .sb-checkbox {
-//   &:hover {
-//     .checkmark {
-//       transition: all $duration_default;
-//       background-color: lighten($color-grey, 47);
-//     }
-//   }
-// }
+.form-check-label {
+  width: 100%;
+  height: 100%;
+}
 
-// .form-check-input {
-//   opacity: 0;
-//   width: 0;
-//   height: 0;
-//   margin:0;
-// }
+.form-check-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin:0;
+}
+
+.label-slot {
+  display: flex;
+  justify-content: center;
+}
 
 // .form-check-label {
 //   display: flex;
 //   align-items: center;
 //   position: relative;
-//   &:not(.sb-disabled) {
+//   &:not(.pt-disabled) {
 //     cursor: pointer;
 //   }
-//    &.sb-disabled {
+//    &.pt-disabled {
 //     input.form-check-input:checked ~ .checkmark {
 //       background-color: $color-disabled;
 //       border-color: $color-disabled;
@@ -218,8 +247,8 @@ export default {
 //   border-radius: $radius-default;
 // }
 // .primary .form-check-label input.form-check-input:checked ~ .checkmark {
-//   background-color: $color-primary;
-//   border-color: $color-primary;
+//   background-color: pink;
+//   border-color: orange;
 // }
 // .secondary .form-check-label input.form-check-input:checked ~ .checkmark {
 //   background-color: $color-secondary;

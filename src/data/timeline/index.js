@@ -1,8 +1,10 @@
 import firebase from 'firebase'
-import moment from 'moment'
+// import moment from 'moment'
 import Timeline from '../../models/timeline'
 import Event from '../../models/timeline/event'
 import Activity from '@/models/timeline/activity'
+
+import moment from 'moment'
 
 import { setCurrentActivity } from '../pet'
 
@@ -86,24 +88,32 @@ export const addActivity = (petRef, timelineRef, activity) => {
     setCurrentActivity(petRef, doc.id)
 }
 
-const compareDate = daysPrior => moment().subtract(daysPrior, 'days').endOf('day').toDate()
-export const eventsObservableFromRefFactory = (timelineRef, daysPrior = 1) => {
+const dateComparer = date => {
+  return {
+    startDate: moment(date).subtract(1, 'days').endOf('day').toDate(),
+    endDate: moment(date).endOf('day').toDate()
+  }
+}
+
+export const eventsObservableFromRefFactory = (timelineRef, date) => {
+  const { startDate, endDate } = dateComparer(date)
   const eventsSnapshot = subscriber =>
     timelineRef.collection('events')
       .withConverter(eventsConverter)
-      .where('date', '>', compareDate(daysPrior))
-      .where('date', '<', compareDate(daysPrior - 1))
+      .where('date', '>', startDate)
+      .where('date', '<', endDate)
       .onSnapshot(subscriber)
 
   return new Observable(eventsSnapshot)
 }
 
-export const activitesObservableFromRefFactory = (timelineRef, daysPrior = 1) => {
+export const activitesObservableFromRefFactory = (timelineRef, date) => {
+  const { startDate, endDate } = dateComparer(date)
   const activitiesSnapshot = subscriber =>
     timelineRef.collection('activities')
       .withConverter(activitiesConverter)
-      .where('startDate', '>', compareDate(daysPrior))
-      .where('startDate', '<', compareDate(daysPrior - 1))
+      .where('startDate', '>', startDate)
+      .where('startDate', '<', endDate)
       .onSnapshot(subscriber)
 
   return new Observable(activitiesSnapshot)
